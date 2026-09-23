@@ -2,6 +2,8 @@
 
 A minimal terminal-inspired portfolio hosted with GitHub Pages.
 
+**Live site:** [pulkit3108.github.io](https://pulkit3108.github.io/)
+
 ## Design
 
 - black and phosphor-green visual system;
