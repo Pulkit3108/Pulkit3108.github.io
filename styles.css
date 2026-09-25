@@ -5,12 +5,16 @@
   --green: #39ff88;
   --green-bright: #8bffb5;
   --green-dim: #68ad7d;
+  --cyan: #72ddf7;
   --text: #c9f7d6;
   --muted: #7da98a;
   --line: rgba(57, 255, 136, 0.24);
   --line-strong: rgba(57, 255, 136, 0.56);
   --shadow: 0 0 30px rgba(57, 255, 136, 0.08);
+  --shadow-strong: 0 18px 60px rgba(0, 0, 0, 0.28), 0 0 38px rgba(57, 255, 136, 0.1);
   --content-width: 1120px;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 * {
@@ -23,7 +27,6 @@ html {
 }
 
 body {
-  min-width: 320px;
   margin: 0;
   overflow-x: hidden;
   background:
@@ -32,9 +35,14 @@ body {
     var(--background);
   background-size: 32px 32px;
   color: var(--text);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.7;
+}
+
+::selection {
+  background: var(--green);
+  color: var(--background);
 }
 
 body::before {
@@ -79,7 +87,9 @@ h1,
 h2,
 h3 {
   color: var(--green-bright);
+  font-family: var(--font-mono);
   line-height: 1.15;
+  text-wrap: balance;
 }
 
 h1 {
@@ -122,7 +132,9 @@ h3 {
   z-index: -1;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 10%, rgba(57, 255, 136, 0.09), transparent 38rem);
+  background:
+    radial-gradient(circle at 22% 9%, rgba(57, 255, 136, 0.11), transparent 34rem),
+    radial-gradient(circle at 88% 28%, rgba(114, 221, 247, 0.055), transparent 28rem);
 }
 
 .site-header,
@@ -133,16 +145,22 @@ footer {
 }
 
 .site-header {
+  position: sticky;
+  z-index: 10;
+  top: 0;
   display: flex;
   min-height: 5.5rem;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
   border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(5, 8, 6, 0.96), rgba(5, 8, 6, 0.82));
+  backdrop-filter: blur(14px);
 }
 
 .brand {
   flex: 0 0 auto;
+  font-family: var(--font-mono);
   text-decoration: none;
 }
 
@@ -160,11 +178,13 @@ footer {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.45rem 1.35rem;
+  font-family: var(--font-mono);
 }
 
 .site-header nav a {
   color: var(--muted);
   text-decoration: none;
+  transition: color 160ms ease, text-shadow 160ms ease;
 }
 
 .site-header nav a::before {
@@ -174,11 +194,13 @@ footer {
 
 .site-header nav a:hover {
   color: var(--green-bright);
+  text-shadow: 0 0 14px rgba(57, 255, 136, 0.36);
 }
 
 .hero {
   display: grid;
   min-height: calc(100vh - 5.5rem);
+  min-height: calc(100svh - 5.5rem);
   padding-block: clamp(4rem, 10vw, 8rem);
   align-items: center;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.5fr);
@@ -188,6 +210,7 @@ footer {
 .terminal-window,
 .status-panel,
 .project-card,
+.certification-card,
 .capability-grid article,
 .contact-section {
   border: 1px solid var(--line);
@@ -197,6 +220,17 @@ footer {
 
 .terminal-window {
   position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-strong);
+}
+
+.terminal-window::before {
+  position: absolute;
+  inset: 2.75rem 0 auto;
+  height: 12rem;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(135deg, rgba(57, 255, 136, 0.055), transparent 58%);
 }
 
 .terminal-window::after,
@@ -235,6 +269,7 @@ footer {
 }
 
 .terminal-body {
+  position: relative;
   padding: clamp(1.5rem, 5vw, 4rem);
 }
 
@@ -257,11 +292,16 @@ footer {
   text-transform: uppercase;
 }
 
+.name-last {
+  white-space: nowrap;
+}
+
 .cursor {
   display: inline-block;
   width: 0.11em;
   height: 0.82em;
   margin-left: 0.12em;
+  vertical-align: -0.04em;
   background: var(--green);
   box-shadow: 0 0 12px var(--green);
   animation: blink 1.05s steps(1, end) infinite;
@@ -295,13 +335,19 @@ footer {
   padding: 0.72rem 1rem;
   border: 1px solid var(--line-strong);
   color: var(--green-bright);
+  font-family: var(--font-mono);
   text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
 .button:hover,
 .button-primary {
   background: var(--green);
   color: var(--background);
+}
+
+.button:hover {
+  transform: translateY(-2px);
 }
 
 .button-primary:hover {
@@ -311,6 +357,7 @@ footer {
 
 .status-panel {
   padding: 1.4rem;
+  font-family: var(--font-mono);
   transform: translateY(1.75rem);
 }
 
@@ -349,8 +396,8 @@ footer {
   margin-bottom: 0;
   color: var(--text);
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
   text-align: right;
-  white-space: nowrap;
 }
 
 .status-light {
@@ -477,11 +524,14 @@ footer {
   min-height: 22rem;
   padding: clamp(1.4rem, 4vw, 2.25rem);
   flex-direction: column;
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .project-card:hover {
   border-color: var(--line-strong);
   background: rgba(11, 29, 16, 0.94);
+  box-shadow: var(--shadow-strong);
+  transform: translateY(-4px);
 }
 
 .project-index {
@@ -496,6 +546,7 @@ footer {
 .project-path {
   padding-right: 3rem;
   font-size: 0.78rem;
+  font-family: var(--font-mono);
   text-transform: uppercase;
 }
 
@@ -517,11 +568,30 @@ footer {
   padding: 0.22rem 0.5rem;
   border: 1px solid var(--line);
   color: var(--green-dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.skill-list {
+  display: flex;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  list-style: none;
+}
+
+.skill-list li {
+  padding: 0.22rem 0.5rem;
+  border: 1px solid var(--line);
+  color: var(--green-dim);
+  font-family: var(--font-mono);
   font-size: 0.72rem;
 }
 
 .project-link {
   align-self: flex-start;
+  font-family: var(--font-mono);
   font-weight: 700;
   text-decoration: none;
 }
@@ -535,9 +605,73 @@ footer {
   padding: clamp(1.4rem, 4vw, 2.2rem);
 }
 
+.capability-grid article > p:last-of-type {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
 .capability-number {
   margin-bottom: 2rem;
   font-size: 0.8rem;
+}
+
+.certification-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.certification-card {
+  position: relative;
+  display: flex;
+  min-height: 14rem;
+  padding: clamp(1.4rem, 4vw, 2.2rem);
+  flex-direction: column;
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.certification-card::after {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 1rem;
+  height: 1rem;
+  border-right: 2px solid var(--cyan);
+  border-bottom: 2px solid var(--cyan);
+  content: "";
+}
+
+.certification-card:hover {
+  border-color: rgba(114, 221, 247, 0.56);
+  background: rgba(8, 23, 27, 0.94);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28), 0 0 38px rgba(114, 221, 247, 0.08);
+  color: #ffffff;
+  transform: translateY(-4px);
+}
+
+.certification-card h3 {
+  max-width: 28ch;
+  margin-bottom: 2rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+}
+
+.certification-card > span {
+  margin-top: auto;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.certification-issuer {
+  margin-bottom: 1.25rem;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .contact-section {
@@ -569,6 +703,11 @@ footer {
 .contact-links a::before {
   content: "> ";
   color: var(--green);
+}
+
+.contact-links,
+footer {
+  font-family: var(--font-mono);
 }
 
 footer {
@@ -624,7 +763,8 @@ footer p {
   .about-grid,
   .ai-grid,
   .project-grid,
-  .capability-grid {
+  .capability-grid,
+  .certification-grid {
     grid-template-columns: 1fr;
   }
 
@@ -662,6 +802,13 @@ footer p {
     padding: 1.25rem;
   }
 
+  h1 {
+    max-width: none;
+    font-size: clamp(1.9rem, 9.5vw, 3.25rem);
+    letter-spacing: -0.065em;
+    white-space: nowrap;
+  }
+
   .project-card {
     min-height: 0;
   }
@@ -697,5 +844,19 @@ footer p {
 
   .cursor {
     animation: none;
+    opacity: 1;
+  }
+
+  .button,
+  .project-card,
+  .certification-card,
+  .site-header nav a {
+    transition: none;
+  }
+
+  .button:hover,
+  .project-card:hover,
+  .certification-card:hover {
+    transform: none;
   }
 }

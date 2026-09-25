@@ -9,6 +9,8 @@ A minimal terminal-inspired portfolio hosted with GitHub Pages.
 - black and phosphor-green visual system;
 - responsive layout with semantic HTML;
 - keyboard-visible navigation and reduced-motion support;
+- focused backend, distributed-systems, cloud, and AI capabilities;
+- linked professional credentials without embedding third-party assets;
 - a practical AI-engineering section focused on efficient, verified workflows;
 - a focused DSA profile with LeetCode and GeeksforGeeks links;
 - no frameworks, build step, external fonts, or image dependencies.
